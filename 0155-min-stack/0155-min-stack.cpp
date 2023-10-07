@@ -1,20 +1,26 @@
 class MinStack {
 public:
     stack<int>s;
-    multiset<int>m;
+    int minElement = INT_MAX;
+
     MinStack() {
         
     }
     
     void push(int val) {
+        if(minElement>=val){
+            s.push(minElement);
+            minElement=val;
+        }
         s.push(val);
-        m.insert(val);
     }
     
     void pop() {
-        int top = s.top();
+        if(minElement==s.top()){
+            s.pop();
+            minElement = s.top();
+        }
         s.pop();
-        m.erase(m.find(top));
     }
     
     int top() {
@@ -22,7 +28,7 @@ public:
     }
     
     int getMin() {
-        return *m.begin();
+        return minElement;
     }
 };
 
