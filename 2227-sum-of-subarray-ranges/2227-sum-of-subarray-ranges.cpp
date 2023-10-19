@@ -1,20 +1,20 @@
 #include<bits/stdc++.h>
 class Solution {
 public:
-    long long subArrayRanges(vector<int>& nums) {
-        long long sum = 0;
-        long long mini,maxi;
-        int n = nums.size();
-
-        for(int i = 0;i<n;i++){
-            mini = nums[i];
-            maxi = nums[i];
-            for(int j = i+1;j<n;j++){
-                if(nums[j] > maxi)  maxi = nums[j];
-                else if(nums[j] < mini) mini = nums[j];
-                sum += (maxi-mini);
+    long long sumSubarrayComp(vector<int>& n, function<bool (int, int)> comp){
+        long long res = 0;
+        vector<int> s;
+        for(int i = 0;i <= n.size(); ++i){
+            while(!s.empty() && (i == n.size() || comp(n[s.back()], n[i]))){
+                int j = s.back(), k = s.size() < 2 ? -1 : s[s.size() - 2];
+                res += (long long)(i - j) * (j - k) * n[j];
+                s.pop_back();
             }
+            s.push_back(i);
         }
-        return sum;
+        return res;
+    }
+    long long subArrayRanges(vector<int>& nums) {
+        return sumSubarrayComp(nums, less<int>()) - sumSubarrayComp(nums, greater<int>());
     }
 };
