@@ -5,14 +5,15 @@ public:
         deque<int> dq;
 
         for(int i = 0;i<nums.size();i++){
-            //Pop from front
+            //pop from front of deque
             if(!dq.empty() && dq.front() == (i-k))  dq.pop_front();
-            
-            //Pop from back recursively
+            //pop from back of deque but check recursively
             while(!dq.empty() && nums[dq.back()] < nums[i]){
                 dq.pop_back();
             }
+            //push in deque from back
             dq.push_back(i);
+            //Check condition to insert in ans vector
             if(i>=k-1)  ans.push_back(nums[dq.front()]);
         }
 
